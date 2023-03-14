@@ -27,10 +27,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@toolz/allow-react)/\" --env=jsdom",
-    "eject": "react-scripts eject",
-    "server-dev": ".. && cd server && npm run start",
-    "start-both": "concurrently \"npm server-dev\" \"npm start\"",
-    "build-both": "concurrently \"npm server-dev\" \"npm build\""
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
