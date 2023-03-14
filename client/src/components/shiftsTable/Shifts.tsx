@@ -11,6 +11,9 @@ function Shift({
   setShifts: React.Dispatch<React.SetStateAction<Shifts[]>>;
   shiftTypes: ShiftTypesType[];
 }) {
+  // console.log({ shifts });
+  // console.log("shiftTypes", shiftTypes);
+
   return (
     <div className="container">
       <div className="empty"></div>

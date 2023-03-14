@@ -27,12 +27,12 @@ function ShiftTypes({
 
   useEffect(() => {
     ApiService.getShiftTypes()
-      .then((data) => setShiftTypes(helper.sortShiftTypeByName(data)))
+      .then((data) => setShiftTypes(data)) // helper.sortShiftTypeByName
       .catch((error) => console.error(error));
   }, [setShiftTypes]);
 
   const handleDelete = (id: number) => {
-      ApiService.deleteShiftType(id)
+    ApiService.deleteShiftType(id)
       .then(() =>
         setShiftTypes(shiftTypes.filter((shift) => shift.shift_type_id !== id))
       )
@@ -42,20 +42,20 @@ function ShiftTypes({
   async function addShift(day_number: number, shift_type_id: number) {
     // This function adds a shift with people_required = 0 by default:
     console.log("running", { day_number, shift_type_id });
-    return ApiService.addShift(day_number, shift_type_id)
+    return ApiService.addShift(day_number, shift_type_id);
   }
 
   async function handleAdd() {
     // Adding a new shift type:
     const newShiftTypeId = // @TODO - use ApiService (but now it has type issue)
       await fetch("http://localhost:4000/shift-type", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newShiftType),
-    }).then((response) => response.json());
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newShiftType),
+      }).then((response) => response.json());
     let tmpShiftType = newShiftTypeId;
     let updatedList = [...shiftTypes, tmpShiftType];
-    setShiftTypes(helper.sortShiftTypeByName(updatedList));
+    setShiftTypes(updatedList); // helper.sortShiftTypeByName
 
     // Creating 28 placeholder shifts associated with the new shift type
     // so that the shift table is pre-populated:
@@ -75,7 +75,7 @@ function ShiftTypes({
     updatedShifts = updatedShifts.map((shift) =>
       shift.shift_type_id === id ? { ...shift, [field]: value } : shift
     );
-    setShiftTypes(helper.sortShiftTypeByName(updatedShifts));
+    setShiftTypes(updatedShifts); // helper.sortShiftTypeByName
   };
 
   const handleSave = (id: number, field: string, value: string) => {
@@ -202,7 +202,7 @@ function ShiftTypes({
             <input
               className="add-input"
               type="text"
-              placeholder ="abbreviation"
+              placeholder="abbreviation"
               name="abbreviation"
               value={newShiftType.abbreviation}
               onChange={handleInputChange}
@@ -229,7 +229,11 @@ function ShiftTypes({
             />
           </td>
           <td>
-            <button className="shift-btn add-btn" onClick={handleAdd} data-testid="addBtn">
+            <button
+              className="shift-btn add-btn"
+              onClick={handleAdd}
+              data-testid="addBtn"
+            >
               <MdDownloadDone />{" "}
             </button>
           </td>

@@ -16,19 +16,28 @@ import * as ApiService from "../ApiService";
 function Redirect() {
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
   const [shiftTypes, setShiftTypes] = useState<ShiftTypesType[]>([]);
-  const [shifts, setShifts] = useState<any[]>([]);
+  const [shifts, setShifts] = useState<any[]>([
+    {
+      shift_id: 1,
+      day_number_array: [
+        0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+      shift_type_id: 1,
+    },
+  ]);
 
   useEffect(() => {
     ApiService.getShiftTypes()
-      .then((data) => setShiftTypes(helper.sortShiftTypeByName(data)))
+      .then((data) => setShiftTypes(data)) // helper.sortShiftTypeByName(data)
       .catch((error) => console.error(error));
   }, [setShiftTypes]);
 
-  useEffect(() => {
-    ApiService.getShifts()
-      .then((data) => setShifts(helper.sortShiftByDate(data)))
-      .catch((error) => console.error(error));
-  }, [setShifts]);
+  // useEffect(() => {
+  //   ApiService.getShifts()
+  //     .then((data) => setShifts(helper.sortShiftByDate(data)))
+  //     .catch((error) => console.error(error));
+  // }, [setShifts]);
 
   return (
     <div className="redirect">

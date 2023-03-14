@@ -5,23 +5,27 @@ function Cell({
   shift,
   shifts,
   setShifts,
-  def,
+  // def,
   className,
+  id,
 }: {
-  shift: Shifts;
+  shift: number;
   shifts: Shifts[];
+  id: number;
   setShifts: React.Dispatch<React.SetStateAction<Shifts[]>>;
-  def: string | number | readonly string[] | undefined;
+  // def: string | number | readonly string[] | undefined;
   className: string;
 }) {
-  const handleUpdate = (id: string, field: string, value: string) => {
+  console.log("SHISTSTS", shifts);
+
+  const handleUpdate = (id: number, field: string, value: string) => {
     let updatedShifts = [...shifts].map((shift) =>
-      shift.shift_id === id ? { ...shift, [field]: value } : shift
+      shift.shift_id === String(id) ? { ...shift, [field]: value } : shift
     );
     setShifts(updatedShifts);
   };
 
-  const handleSave = (id: string, field: string, value: string) => {
+  const handleSave = (id: number, field: string, value: string) => {
     ApiService.changeShift(id, field, value);
   };
 
@@ -29,15 +33,11 @@ function Cell({
     <>
       <input
         type="text"
-        defaultValue={def}
+        defaultValue={shift}
         className={`grid-element ${className}`}
         name="people_required"
-        onChange={(ev) =>
-          handleUpdate(shift.shift_id, "people_required", ev.target.value)
-        }
-        onBlur={(ev) =>
-          handleSave(shift.shift_id, "people_required", ev.target.value)
-        }
+        onChange={(ev) => handleUpdate(id, "people_required", ev.target.value)}
+        onBlur={(ev) => handleSave(id, "people_required", ev.target.value)}
       />
     </>
   );
