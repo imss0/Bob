@@ -50,11 +50,11 @@ async function expandShiftsWithShiftType() {
   try {
     let inp = await getAllShiftsWithShiftType();
     let out = inp
-      .filter((shift: ShiftTypes) => shift["shifts.people_required"] > 0)
+      .filter((shift: any) => shift["shifts.people_required"] > 0)
       .map((shift: ShiftTypes) => {
         return { ...shift, assignedEmployees: [] };
       });
-    out.forEach((shift: ShiftTypes) => {
+    out.forEach((shift: any) => {
       let d = shift["shifts.day_number"].toString();
       days[d].push(shift);
     });
@@ -109,7 +109,7 @@ async function generateRandomRotas() {
       }
 
       // loop through each array of shifts in a day
-      (days[dayNumber] ?? []).forEach((shiftType: Shift) => {
+      (days[dayNumber] ?? []).forEach((shiftType: any) => {
         let availablePeople = employees
           .filter((x) =>
             prioritise(employees, shiftType).includes(x.employee_id)
