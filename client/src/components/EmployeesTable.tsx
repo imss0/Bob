@@ -135,6 +135,7 @@ const EmployeesTable = ({
               <button
                 className="employee-btn delete-btn"
                 onClick={() => handleDelete(employee.employee_id)}
+                data-cy="delete-employee"
               >
                 <AiOutlineUserDelete />
               </button>
@@ -148,6 +149,7 @@ const EmployeesTable = ({
               className="add-input"
               type="text"
               placeholder="name"
+              data-cy="name-input"
               name="name"
               value={newEmployee.name}
               onChange={handleInputChange}
@@ -158,6 +160,7 @@ const EmployeesTable = ({
               className="add-input"
               type="text"
               placeholder="surname"
+              data-cy="surname-input"
               name="surname"
               value={newEmployee.surname}
               onChange={handleInputChange}
@@ -168,13 +171,18 @@ const EmployeesTable = ({
               className="add-input"
               type="email"
               placeholder="email"
+              data-cy="email-input"
               name="email"
               value={newEmployee.email}
               onChange={handleInputChange}
             />
           </td>
           <td>
-            <button className="employee-btn add-btn" onClick={handleAdd}>
+            <button
+              className="employee-btn add-btn"
+              onClick={handleAdd}
+              data-cy="create-employee"
+            >
               {" "}
               <AiOutlineUserAdd />{" "}
             </button>
