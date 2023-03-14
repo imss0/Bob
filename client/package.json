@@ -29,7 +29,7 @@
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@toolz/allow-react)/\" --env=jsdom",
     "eject": "react-scripts eject",
     "server-dev": ".. && cd server && npm run start",
-    "server-build": ".. && cd server && npm run build",
+    "server-build": ".. && cd server && npm run start",
     "start-both": "concurrently \"npm server-dev\" \"npm client-dev\"",
     "build-both": "concurrently \"npm server-build\" \"npm run build\""
   },
