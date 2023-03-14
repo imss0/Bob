@@ -9,6 +9,7 @@
     "@types/node": "^18.15.0",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
+    "concurrently": "^7.6.0",
     "install": "^0.13.0",
     "npm": "^9.6.1",
     "react": "^18.2.0",
@@ -26,7 +27,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@toolz/allow-react)/\" --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server-dev": ".. && cd server && npm start",
+    "server-build": ".. && cd server && npm build",
+    "start-both": "concurrently \"npm server-dev\" \"npm client-dev\"",
+    "build-both": "concurrently \"npm server-build\" \"npm build\""
   },
   "eslintConfig": {
     "extends": [
