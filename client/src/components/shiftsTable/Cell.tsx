@@ -22,24 +22,23 @@ function Cell({
     // let updatedShifts = [...shifts].map((shift) =>
     //   shift.shift_id === String(id) ? { ...shift, [field]: value } : shift
     // );
-    const updatedShifts = shifts.map((item: any) => {
+    const updatedShifts: Shifts[] = shifts.map((item: any) => {
       if (item.shift_type_id === shiftType.shift_type_id) {
-        const currentShiftDaysArray = item.day_number_array[index]
+        const currentShiftDaysArray = String(item.day_number_array)
           .substring(1, item.day_number_array.length - 1)
           .split(",");
+        console.log({ currentShiftDaysArray });
+        currentShiftDaysArray.splice(index, 1, value);
         return {
-          ...item,
-          days_number_array: currentShiftDaysArray.splice(
-            index,
-            1,
-            value === "" ? 0 : value
-          ),
+          shift_type_id: item.shift_type_id,
+          shift_id: item.shift_id,
+          day_number_array: `[${currentShiftDaysArray}]`,
         };
       } else {
-        return shift;
+        return item;
       }
     });
-    setShifts(updatedShifts);
+    setShifts([...updatedShifts]);
   };
 
   const handleSave = (id: number, value: string) => {
