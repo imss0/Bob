@@ -45,12 +45,12 @@ async function getAllShiftsWithShiftType() {
             start: shift["start"],
             end: shift["end"],
             description: shift["description"],
-            "shifts.day_number": i,
+            "shifts.day_number": i + 1,
             "shifts.people_required": item,
           };
         });
     });
-    console.log("reformatedArray", reformatedArray);
+    // console.log("reformatedArray", reformatedArray);
     return reformatedArray;
     // return shiftsCell;
   } catch (error) {
@@ -80,12 +80,14 @@ async function expandShiftsWithShiftType() {
   try {
     let inp = await getAllShiftsWithShiftType();
     let out = inp
+      .flat()
       .filter((shift: any) => shift["shifts.people_required"] > 0)
       .map((shift: ShiftTypes) => {
         return { ...shift, assignedEmployees: [] };
       });
     out.forEach((shift: any) => {
       let d = shift["shifts.day_number"].toString();
+      console.log('d', days[d]);
       days[d].push(shift);
     });
     console.log({ days });
@@ -149,9 +151,10 @@ async function generateRandomRotas() {
 
         let toBeAssigned: any[] = [];
         if (availablePeople.length < shiftType["shifts.people_required"]) {
-          throw new Error(
-            "There is an issue with the number of available employees. Check you hired enough"
-          );
+          // throw new Error(
+          //   "There is an issue with the number of available employees. Check you hired enough"
+          // );
+          console.log( "There is an issue with the number of available employees. Check you hired enough")
         }
         toBeAssigned = availablePeople.slice(
           0,
