@@ -22,7 +22,37 @@ async function getAllShiftsWithShiftType() {
       //https://stackoverflow.com/questions/21961818/sequelize-convert-entity-to-plain-object
       raw: true,
     });
-    return shiftsCell;
+    console.log({ shiftsCell });
+    /*
+{
+  shift_type_id: string;
+  abbreviation: string;
+  start: string;
+  end: string;
+  description: string;
+  dayIndex: number;
+  people_required: number;
+}
+*/
+    const reformatedArray = shiftsCell.map((shift: any) => {
+      return String(shift["shifts.day_number_array"])
+        .substring(1, shift["shifts.day_number_array"].length - 1)
+        .split(",")
+        .map((item: any, i: any) => {
+          return {
+            shift_type_id: shift["shift_type_id"],
+            abbreviation: shift["abbreviation"],
+            start: shift["start"],
+            end: shift["end"],
+            description: shift["description"],
+            "shifts.day_number": i,
+            "shifts.people_required": item,
+          };
+        });
+    });
+    console.log("reformatedArray", reformatedArray);
+    return reformatedArray;
+    // return shiftsCell;
   } catch (error) {
     console.log(error);
   }
@@ -44,7 +74,7 @@ let getAllEmployees = async () => {
 };
 
 async function expandShiftsWithShiftType() {
-  let days: Record<string, any> = [...Array(28).keys()].reduce((acc, elem) => {
+  let days: Record<string, any> = [...Array(31).keys()].reduce((acc, elem) => {
     return { ...acc, ...{ [elem + 1]: [] } };
   }, {});
   try {
@@ -58,6 +88,7 @@ async function expandShiftsWithShiftType() {
       let d = shift["shifts.day_number"].toString();
       days[d].push(shift);
     });
+    console.log({ days });
     return days;
   } catch (err) {
     console.log(err);
