@@ -11,11 +11,14 @@ function Shift({
   setShifts: React.Dispatch<React.SetStateAction<Shifts[]>>;
   shiftTypes: ShiftTypesType[];
 }) {
+  // console.log({ shifts });
+  // console.log("shiftTypes", shiftTypes);
+
   return (
     <div className="container">
       <div className="empty"></div>
       {(() => {
-        const res = [...Array(28).keys()].map((x) => x + 1);
+        const res = [...Array(31).keys()].map((x) => x + 1);
         return res.map((x) => (
           <div
             key={x}

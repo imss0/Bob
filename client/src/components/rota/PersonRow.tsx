@@ -8,7 +8,7 @@ function PersonRow({
   employee: Employee;
   abbreviations: Abbreviations;
 }) {
-  const days = [...Array(28).keys()]
+  const days = [...Array(31).keys()]
     .map((x) => x + 1)
     .map((x) => {
       const shiftOnDay = employee.shifts.filter(

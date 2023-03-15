@@ -1,43 +1,74 @@
-import { Shifts } from "../../types";
+import { Shift, Shifts } from "../../types";
 import * as ApiService from "../../ApiService";
 
 function Cell({
   shift,
   shifts,
   setShifts,
-  def,
   className,
+  cellDayNumber,
+  shiftType,
 }: {
-  shift: Shifts;
+  shift: number;
   shifts: Shifts[];
+  cellDayNumber: number;
   setShifts: React.Dispatch<React.SetStateAction<Shifts[]>>;
-  def: string | number | readonly string[] | undefined;
   className: string;
+  shiftType: any;
 }) {
-  const handleUpdate = (id: string, field: string, value: string) => {
-    let updatedShifts = [...shifts].map((shift) =>
-      shift.shift_id === id ? { ...shift, [field]: value } : shift
-    );
-    setShifts(updatedShifts);
+  console.log("SHISTSTS", shifts);
+
+  const handleUpdate = (index: number, value: string) => {
+    // let updatedShifts = [...shifts].map((shift) =>
+    //   shift.shift_id === String(id) ? { ...shift, [field]: value } : shift
+    // );
+    const updatedShifts: Shifts[] = shifts.map((item: any) => {
+      if (item.shift_type_id === shiftType.shift_type_id) {
+        const currentShiftDaysArray = String(item.day_number_array)
+          .substring(1, item.day_number_array.length - 1)
+          .split(",");
+        console.log({ currentShiftDaysArray });
+        currentShiftDaysArray.splice(index, 1, value);
+        return {
+          shift_type_id: item.shift_type_id,
+          shift_id: item.shift_id,
+          day_number_array: `[${currentShiftDaysArray}]`,
+        };
+      } else {
+        return item;
+      }
+    });
+    setShifts([...updatedShifts]);
   };
 
-  const handleSave = (id: string, field: string, value: string) => {
-    ApiService.changeShift(id, field, value);
+  const handleSave = (id: number, value: string) => {
+    console.log("ARR", { shifts }, { id }, { value }, { shiftType });
+    const currentShiftDays = shifts.find(
+      (item) => item.shift_type_id === shiftType.shift_type_id
+    )?.day_number_array;
+    if (currentShiftDays) {
+      const tempArr = String(currentShiftDays)
+        .substring(1, currentShiftDays.length - 1)
+        .split(",");
+
+      tempArr.splice(id, 1, value === "" ? "0" : value);
+      console.log("UPDATED", tempArr);
+      ApiService.changeShift(
+        shiftType.shift_type_id,
+        tempArr.map((item) => Number(item))
+      );
+    }
   };
 
   return (
     <>
       <input
         type="text"
-        defaultValue={def}
+        defaultValue={shift}
         className={`grid-element ${className}`}
         name="people_required"
-        onChange={(ev) =>
-          handleUpdate(shift.shift_id, "people_required", ev.target.value)
-        }
-        onBlur={(ev) =>
-          handleSave(shift.shift_id, "people_required", ev.target.value)
-        }
+        onChange={(ev) => handleUpdate(cellDayNumber, ev.target.value)}
+        onBlur={(ev) => handleSave(cellDayNumber, ev.target.value)}
       />
     </>
   );

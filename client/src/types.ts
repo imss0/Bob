@@ -1,18 +1,17 @@
 export type ShiftTypes = {
-    abbreviation: string;
-    description: string;
-    duration: number;
-    end: string;
-    shift_type_id: number;
-    start: string;
-}
+  abbreviation: string;
+  description: string;
+  duration: number;
+  end: string;
+  shift_type_id: number;
+  start: string;
+};
 
 export type Shifts = {
-    day_number: number;
-    shift_id: string;
-    shift_type_id: number;
-    people_required: number;
-}
+  day_number_array: number[];
+  shift_id: string;
+  shift_type_id: number;
+};
 
 export type Shift = {
   abbreviation: string;
@@ -21,24 +20,23 @@ export type Shift = {
   shift_type_id: number;
   shifts: Shifts[];
   start: string;
-}
+};
 
 export type Employees = {
-    employee_id: number;
-    name: string;
-    surname: string;
-    email: string;
-}
+  employee_id: number;
+  name: string;
+  surname: string;
+  email: string;
+};
 
 export type Employee = {
-    employee_id: number;
-    name: string;
-    restedEnough: boolean;
-    hours: number;
-    shifts: Shift[];
-}
-
+  employee_id: number;
+  name: string;
+  restedEnough: boolean;
+  hours: number;
+  shifts: Shift[];
+};
 
 export type Abbreviations = {
-  [key: string]: string,
+  [key: string]: string;
 };

@@ -20,13 +20,13 @@ function Redirect() {
 
   useEffect(() => {
     ApiService.getShiftTypes()
-      .then((data) => setShiftTypes(helper.sortShiftTypeByName(data)))
+      .then((data) => setShiftTypes(data)) // helper.sortShiftTypeByName(data)
       .catch((error) => console.error(error));
   }, [setShiftTypes]);
 
   useEffect(() => {
     ApiService.getShifts()
-      .then((data) => setShifts(helper.sortShiftByDate(data)))
+      .then((data) => setShifts(data))
       .catch((error) => console.error(error));
   }, [setShifts]);
 
