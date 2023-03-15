@@ -18,13 +18,23 @@ function Cell({
 }) {
   console.log("SHISTSTS", shifts);
 
-  const handleUpdate = (id: number, value: string) => {
+  const handleUpdate = (index: number, value: string) => {
     // let updatedShifts = [...shifts].map((shift) =>
     //   shift.shift_id === String(id) ? { ...shift, [field]: value } : shift
     // );
-    const updatedShifts = shifts.map((shift: any) => {
-      if (shift.shift_id === String(id)) {
-        return (shift.day_number_array[id] = value);
+    const updatedShifts = shifts.map((item: any) => {
+      if (item.shift_type_id === shiftType.shift_type_id) {
+        const currentShiftDaysArray = item.day_number_array[index]
+          .substring(1, item.day_number_array.length - 1)
+          .split(",");
+        return {
+          ...item,
+          days_number_array: currentShiftDaysArray.splice(
+            index,
+            1,
+            value === "" ? 0 : value
+          ),
+        };
       } else {
         return shift;
       }
@@ -42,8 +52,8 @@ function Cell({
         .substring(1, currentShiftDays.length - 1)
         .split(",");
 
-      tempArr.splice(id, 1, value);
-      console.log("UPDATEd", tempArr);
+      tempArr.splice(id, 1, value === "" ? "0" : value);
+      console.log("UPDATED", tempArr);
       ApiService.changeShift(
         shiftType.shift_type_id,
         tempArr.map((item) => Number(item))
