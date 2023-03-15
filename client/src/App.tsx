@@ -12,7 +12,8 @@ import {
 
 const clerk_pub_key = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY!;
 
-function App () {
+function App() {
+
   return (
     <ClerkProvider publishableKey={clerk_pub_key}>
       <div className="App">

@@ -12,12 +12,17 @@ import Home from "./Home";
 import Rota from "./rota/Rota";
 import Shifts from "./shiftsTable/Shifts";
 import * as ApiService from "../ApiService";
+import {
+  UserButton,
+  useUser,
+} from "@clerk/clerk-react";
 
 function Redirect() {
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
   const [shiftTypes, setShiftTypes] = useState<ShiftTypesType[]>([]);
   const [shifts, setShifts] = useState<any[]>([]);
-
+  const user = useUser();
+  console.log('user',user)
   useEffect(() => {
     ApiService.getShiftTypes()
       .then((data) => setShiftTypes(data)) // helper.sortShiftTypeByName(data)
