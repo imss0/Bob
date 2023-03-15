@@ -87,7 +87,6 @@ async function expandShiftsWithShiftType() {
       });
     out.forEach((shift: any) => {
       let d = shift["shifts.day_number"].toString();
-      console.log('d', days[d]);
       days[d].push(shift);
     });
     console.log({ days });
@@ -135,7 +134,7 @@ async function generateRandomRotas() {
     let days: Record<string, any> = { ...inpDays };
     let employees = [...inpEmployees];
     // loop for every day
-    for (let dayNumber = 1; dayNumber <= 28; dayNumber++) {
+    for (let dayNumber = 1; dayNumber <= 31; dayNumber++) {
       // if no shift is required, go to next day
       if (days[dayNumber].length === 0) {
         continue;
@@ -151,10 +150,10 @@ async function generateRandomRotas() {
 
         let toBeAssigned: any[] = [];
         if (availablePeople.length < shiftType["shifts.people_required"]) {
-          // throw new Error(
-          //   "There is an issue with the number of available employees. Check you hired enough"
-          // );
-          console.log( "There is an issue with the number of available employees. Check you hired enough")
+          throw new Error(
+            "There is an issue with the number of available employees. Check you hired enough"
+          );
+          // console.log( "There is an issue with the number of available employees. Check you hired enough")
         }
         toBeAssigned = availablePeople.slice(
           0,
