@@ -11,7 +11,7 @@ function Row({
   setShifts: React.Dispatch<React.SetStateAction<Shifts[]>>;
 }) {
   console.log({ shifts });
-  // console.log("shiftTypes", shiftType);
+  console.log("shiftTypes", shiftType);
 
   return (
     <>
@@ -20,16 +20,22 @@ function Row({
       {shifts
         .filter((shift) => shift.shift_type_id === shiftType.shift_type_id)
         .map((shift) =>
-          shift.day_number_array.map((shift, i) => (
-            <Cell
-              className={`grid-element-${i % 7 === 0 ? "seventh" : "week"}`}
-              key={i}
-              id={i}
-              setShifts={setShifts}
-              shifts={shifts}
-              shift={shift}
-            />
-          ))
+          String(shift.day_number_array)
+            .substring(1, shift.day_number_array.length - 1)
+            .split(",")
+            .map((shift, i) => (
+              <Cell
+                className={`grid-element-${
+                  (i + 1) % 7 === 0 ? "seventh" : "week"
+                }`}
+                key={i}
+                cellDayNumber={i}
+                setShifts={setShifts}
+                shifts={shifts}
+                shiftType={shiftType}
+                shift={Number(shift)}
+              />
+            ))
         )}
     </>
   );

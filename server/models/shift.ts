@@ -9,12 +9,8 @@ const Shift = (sequelize: any, DataTypes: any) =>
         autoIncrement: true,
         primaryKey: true,
       },
-      day_number: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      people_required: {
-        type: DataTypes.INTEGER,
+      day_number_array: {
+        type: DataTypes.STRING,
         allowNull: true,
       },
     },

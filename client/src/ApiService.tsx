@@ -23,13 +23,15 @@ export const deleteShiftType = async (id: number) => {
   fetch(`${URL}shift-type/${id}`, { method: "DELETE" });
 };
 
-export const addShift = async (day_number: number, shift_type_id: number) => {
+export const addShift = async (
+  day_number_array: number[],
+  shift_type_id: number
+) => {
   const shift = await fetch(`${URL}shift`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      day_number: day_number,
-      people_required: 0,
+      day_number_array: day_number_array,
       shift_type_id: shift_type_id,
     }),
   })
@@ -113,11 +115,11 @@ export const getRota = async () => {
 };
 
 // API for Cell (in shifts)
-export const changeShift = async (id: number, field: string, value: string) => {
+export const changeShift = async (id: number, updatedArray: number[]) => {
   const response = fetch(`${URL}shift/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ [field]: value }),
+    body: JSON.stringify({ day_number_array: JSON.stringify(updatedArray) }),
   });
 
   return response;

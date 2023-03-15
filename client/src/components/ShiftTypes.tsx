@@ -39,16 +39,14 @@ function ShiftTypes({
       .catch((error) => console.error(error));
   };
 
-  async function addShift(day_number: number, shift_type_id: number) {
-    // This function adds a shift with people_required = 0 by default:
-    console.log("running", { day_number, shift_type_id });
-    return ApiService.addShift(day_number, shift_type_id);
+  async function addShift(day_number_array: number[], shift_type_id: number) {
+    return ApiService.addShift(day_number_array, shift_type_id);
   }
 
   async function handleAdd() {
     // Adding a new shift type:
     const newShiftTypeId = // @TODO - use ApiService (but now it has type issue)
-      await fetch("http://localhost:4000/shift-type", {
+      await fetch(URL + "shift-type", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newShiftType),
@@ -57,14 +55,16 @@ function ShiftTypes({
     let updatedList = [...shiftTypes, tmpShiftType];
     setShiftTypes(updatedList); // helper.sortShiftTypeByName
 
-    // Creating 28 placeholder shifts associated with the new shift type
+    // Creating 31 placeholder shifts associated with the new shift type
     // so that the shift table is pre-populated:
-    let newShifts = [...Array(28).keys()].map((x) => x + 1);
-    newShifts = await Promise.all(
-      newShifts.map(async (shift) => {
-        return addShift(shift, tmpShiftType.shift_type_id);
-      })
-    );
+    let newShifts = [...Array(31).fill(0)];
+    // newShifts = await Promise.all(
+    //   newShifts.map(async (shift) => {
+    //     return addShift(shift, tmpShiftType.shift_type_id);
+    //   })
+    // );
+    addShift(newShifts, tmpShiftType.shift_type_id);
+    console.log("NEW2", newShifts);
     //updating shifts:
     setShifts([...shifts, ...newShifts]);
     setNewShiftType({ description: "", abbreviation: "", start: "", end: "" });

@@ -15,8 +15,7 @@ exports.getAllShifts = async (req: Request, res: Response) => {
 exports.addShift = async (req: Request, res: Response) => {
   try {
     let newShift = await db.Shift.create({
-      day_number: req.body.day_number,
-      people_required: req.body.people_required,
+      day_number_array: JSON.stringify(req.body.day_number_array),
       shift_type_id: req.body.shift_type_id,
     });
 
