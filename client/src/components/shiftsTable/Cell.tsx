@@ -8,6 +8,7 @@ function Cell({
   className,
   cellDayNumber,
   shiftType,
+  userId
 }: {
   shift: number;
   shifts: Shifts[];
@@ -15,13 +16,10 @@ function Cell({
   setShifts: React.Dispatch<React.SetStateAction<Shifts[]>>;
   className: string;
   shiftType: any;
+  userId: string;
 }) {
-  console.log("SHISTSTS", shifts);
 
   const handleUpdate = (index: number, value: string) => {
-    // let updatedShifts = [...shifts].map((shift) =>
-    //   shift.shift_id === String(id) ? { ...shift, [field]: value } : shift
-    // );
     const updatedShifts: Shifts[] = shifts.map((item: any) => {
       if (item.shift_type_id === shiftType.shift_type_id) {
         const currentShiftDaysArray = String(item.day_number_array)
@@ -55,7 +53,8 @@ function Cell({
       console.log("UPDATED", tempArr);
       ApiService.changeShift(
         shiftType.shift_type_id,
-        tempArr.map((item) => Number(item))
+        tempArr.map((item) => Number(item)),
+        userId
       );
     }
   };

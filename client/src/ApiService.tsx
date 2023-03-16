@@ -2,32 +2,33 @@ import { ShiftTypes } from "./types";
 const URL: string = "http://localhost:4000/";
 
 // API for Redirect
-export const getShifts = async () => {
+export const getShifts = async (user_id: string) => {
   // this one is used in Redirect as well
-  const response = await fetch(`${URL}shifts`).then((response) =>
+  const response = await fetch(`${URL}shifts/${user_id}`).then((response) =>
     response.json()
   );
   return response;
 };
 
-export const getShiftTypes = async () => {
+export const getShiftTypes = async (user_id: string) => {
   // this one is used in ShiftTypes as well
-  const response = await fetch(`${URL}shift-types`).then((response) =>
+  const response = await fetch(`${URL}shift-types/${user_id}`).then((response) =>
     response.json()
   );
   return response;
 };
 
 // API for ShiftTypes
-export const deleteShiftType = async (id: number) => {
-  fetch(`${URL}shift-type/${id}`, { method: "DELETE" });
+export const deleteShiftType = async (id: number, user_id: string) => {
+  fetch(`${URL}shift-type/${id}/${user_id}`, { method: "DELETE" });
 };
 
 export const addShift = async (
   day_number_array: number[],
-  shift_type_id: number
+  shift_type_id: number,
+  user_id: string
 ) => {
-  const shift = await fetch(`${URL}shift`, {
+  const shift = await fetch(`${URL}shift/${user_id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -40,8 +41,8 @@ export const addShift = async (
   return shift;
 };
 
-export const handleAddShiftType = async (newShiftType: ShiftTypes) => {
-  const newShiftTypeId = await fetch(`${URL}shift-type`, {
+export const handleAddShiftType = async (newShiftType: ShiftTypes, user_id: string) => {
+  const newShiftTypeId = await fetch(`${URL}shift-type/${user_id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(newShiftType),
@@ -53,9 +54,10 @@ export const handleAddShiftType = async (newShiftType: ShiftTypes) => {
 export const changeShiftType = async (
   id: number,
   field: string,
-  value: string
+  value: string,
+  user_id: string
 ) => {
-  fetch(`${URL}shift-type/${id}`, {
+  fetch(`${URL}shift-type/${id}/${user_id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ [field]: value }),
@@ -65,20 +67,20 @@ export const changeShiftType = async (
 };
 
 // API for employeesTable
-export const getEmployees = async () => {
-  const response = await fetch(`${URL}employees`).then((response) =>
+export const getEmployees = async (user_id: string) => {
+  const response = await fetch(`${URL}employees/${user_id}`).then((response) =>
     response.json()
   );
 
   return response;
 };
 
-export const deleteEmployee = async (id: number) => {
-  fetch(`${URL}employees/${id}`, { method: "DELETE" });
+export const deleteEmployee = async (id: number, user_id: string) => {
+  fetch(`${URL}employees/${id}/${user_id}`, { method: "DELETE" });
 };
 
-export const addEmployee = async (newEmployee: any) => {
-  const response = fetch(`${URL}employee`, {
+export const addEmployee = async (newEmployee: any, user_id: string) => {
+  const response = fetch(`${URL}employee/${user_id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(newEmployee),
@@ -90,9 +92,10 @@ export const addEmployee = async (newEmployee: any) => {
 export const changeEmployee = async (
   id: number,
   field: string,
-  value: string
+  value: string,
+  user_id: string
 ) => {
-  const response = fetch(`${URL}employee/${id}`, {
+  const response = fetch(`${URL}employee/${id}/${user_id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ [field]: value }),
@@ -102,8 +105,8 @@ export const changeEmployee = async (
 };
 
 // API for Rota
-export const getRota = async () => {
-  const response = await fetch(`${URL}rota`)
+export const getRota = async (user_id: string) => {
+  const response = await fetch(`${URL}rota/${user_id}`)
     .then((res) => {
       if (res.status >= 400) {
         return Promise.reject("Failed to fetch!");
@@ -115,8 +118,8 @@ export const getRota = async () => {
 };
 
 // API for Cell (in shifts)
-export const changeShift = async (id: number, updatedArray: number[]) => {
-  const response = fetch(`${URL}shift/${id}`, {
+export const changeShift = async (id: number, updatedArray: number[], user_id: string) => {
+  const response = fetch(`${URL}shift/${id}/${user_id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ day_number_array: JSON.stringify(updatedArray) }),
@@ -124,5 +127,12 @@ export const changeShift = async (id: number, updatedArray: number[]) => {
 
   return response;
 };
+
+// API for userDB check
+export const getUser = async (user_id: string) => {
+  return fetch(`${URL}getuser/${user_id}`)
+    .then(res => res.json());
+  
+}
 
 export {};

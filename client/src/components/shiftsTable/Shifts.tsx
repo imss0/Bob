@@ -6,10 +6,12 @@ function Shift({
   shifts,
   setShifts,
   shiftTypes,
+  userId
 }: {
   shifts: Shifts[];
   setShifts: React.Dispatch<React.SetStateAction<Shifts[]>>;
   shiftTypes: ShiftTypesType[];
+  userId: string
 }) {
   // console.log({ shifts });
   // console.log("shiftTypes", shiftTypes);
@@ -39,6 +41,7 @@ function Shift({
           shifts={shifts}
           setShifts={setShifts}
           shiftType={shiftType}
+          userId={userId}
         ></Row>
       ))}
     </div>

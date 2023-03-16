@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["cypress", "jest"],
+    "types": ["cypress", "jest", "node"],
     "target": "es2015",
     "downlevelIteration": true,
     "lib": ["dom", "dom.iterable", "esnext"],
