@@ -12,8 +12,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - run: cd server && npm install
-      - run: cd server npm start
+      - run: cd server && npm ci
+      - run: cd server && npm start
 
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
