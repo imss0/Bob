@@ -27,25 +27,27 @@ async function getAllShiftsWithShiftType(user_id:string) {
     });
     console.log({ shiftsCell });
 
-    const reformatedArray = shiftsCell.map((shift: any) => {
-      return String(shift["shifts.day_number_array"])
-        .substring(1, shift["shifts.day_number_array"].length - 1)
-        .split(",")
-        .map((item: any, i: any) => {
-          return {
-            shift_type_id: shift["shift_type_id"],
-            abbreviation: shift["abbreviation"],
-            start: shift["start"],
-            end: shift["end"],
-            description: shift["description"],
-            "shifts.day_number": i + 1,
-            "shifts.people_required": item,
-          };
-        });
-    });
-    // console.log("reformatedArray", reformatedArray);
+    const reformatedArray = shiftsCell
+      .map((shift: any) => {
+        if (shift.user_id !== user_id) return null;
+        return String(shift["shifts.day_number_array"])
+          .substring(1, shift["shifts.day_number_array"].length - 1)
+          .split(",")
+          .map((item: any, i: any) => {
+            return {
+              shift_type_id: shift["shift_type_id"],
+              abbreviation: shift["abbreviation"],
+              start: shift["start"],
+              end: shift["end"],
+              description: shift["description"],
+              user_id: shift.user_id,
+              "shifts.day_number": i + 1,
+              "shifts.people_required": item,
+            };
+          });
+      }).filter((shift:any) => shift !== null)
+    console.log("reformatedArray", reformatedArray[0].map((item:any) => item.user_id));
     return reformatedArray;
-    // return shiftsCell;
   } catch (error) {
     console.log(error);
   }
@@ -53,7 +55,12 @@ async function getAllShiftsWithShiftType(user_id:string) {
 
 let getAllEmployees = async (user_id:string) => {
   try {
-    let temp = await db.Employee.findAll({ raw: true });
+    let temp = await db.Employee.findAll({
+      where: {
+        user_id: user_id
+      },
+      raw: true
+    });
     let employees = temp.map((emp: Employees) => ({
       employee_id: emp.employee_id,
       name: `${emp.name} ${emp.surname}`,

@@ -39,18 +39,22 @@ function Rota({ shiftTypes, userId }: { shiftTypes: ShiftTypesType[], userId: st
   if (error) {
     return <h1 style={{ color: "red" }}> {error}</h1>;
   }
+  console.log('rota', rota);
   return (
     <>
       <div className="grid">
         <div className="empty"></div>
         {createDays()}
-        {rota.map((employee) => (
-          <PersonRow
+        {rota.map((employee:any) => {
+          if (employee.user_id !== userId) {
+            return (<PersonRow
             abbreviations={abbreviations}
             key={employee.employee_id}
             employee={employee}
-          ></PersonRow>
-        ))}
+          ></PersonRow>)
+        }
+        }
+        )}
       </div>
     </>
   );

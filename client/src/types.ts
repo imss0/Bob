@@ -27,6 +27,7 @@ export type Employees = {
   name: string;
   surname: string;
   email: string;
+  user_id: string;
 };
 
 export type Employee = {
