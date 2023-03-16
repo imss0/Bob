@@ -5,13 +5,14 @@ function Row({
   shiftType,
   shifts,
   setShifts,
+  userId
 }: {
   shiftType: ShiftTypesType;
   shifts: Shifts[];
   setShifts: React.Dispatch<React.SetStateAction<Shifts[]>>;
+  userId: string
 }) {
-  console.log({ shifts });
-  console.log("shiftTypes", shiftType);
+
 
   return (
     <>
@@ -25,15 +26,15 @@ function Row({
             .split(",")
             .map((shift, i) => (
               <Cell
-                className={`grid-element-${
-                  (i + 1) % 7 === 0 ? "seventh" : "week"
-                }`}
+                className={`grid-element-${(i + 1) % 7 === 0 ? "seventh" : "week"
+                  }`}
                 key={i}
                 cellDayNumber={i}
                 setShifts={setShifts}
                 shifts={shifts}
                 shiftType={shiftType}
                 shift={Number(shift)}
+                userId={userId}
               />
             ))
         )}

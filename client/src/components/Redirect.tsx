@@ -13,7 +13,6 @@ import Rota from "./rota/Rota";
 import Shifts from "./shiftsTable/Shifts";
 import * as ApiService from "../ApiService";
 import {
-  UserButton,
   useUser,
 } from "@clerk/clerk-react";
 
@@ -22,15 +21,15 @@ function Redirect() {
   const [shiftTypes, setShiftTypes] = useState<ShiftTypesType[]>([]);
   const [shifts, setShifts] = useState<any[]>([]);
   const user = useUser();
-  console.log('user',user)
+  const user_id = user?.user?.id as string
   useEffect(() => {
-    ApiService.getShiftTypes()
+    ApiService.getShiftTypes(user_id)
       .then((data) => setShiftTypes(data)) // helper.sortShiftTypeByName(data)
       .catch((error) => console.error(error));
   }, [setShiftTypes]);
 
   useEffect(() => {
-    ApiService.getShifts()
+    ApiService.getShifts(user_id)
       .then((data) => setShifts(data))
       .catch((error) => console.error(error));
   }, [setShifts]);
@@ -43,7 +42,7 @@ function Redirect() {
         <Route
           path="/employees"
           element={
-            <EmployeesTable employees={employees} setEmployees={setEmployees} />
+            <EmployeesTable employees={employees} setEmployees={setEmployees} userId={user_id} />
           }
         />
 
@@ -54,6 +53,7 @@ function Redirect() {
               shifts={shifts}
               setShifts={setShifts}
               shiftTypes={shiftTypes}
+              userId={user_id}
             />
           }
         />
@@ -66,11 +66,12 @@ function Redirect() {
               setShiftTypes={setShiftTypes}
               shifts={shifts}
               setShifts={setShifts}
+              userId={user_id}
             />
           }
         />
 
-        <Route path="/rota" element={<Rota shiftTypes={shiftTypes} />} />
+        <Route path="/rota" element={<Rota shiftTypes={shiftTypes} userId={user_id}  />} />
 
         <Route path="*" element={<h1> Invalid Url</h1>} />
       </Routes>

@@ -22,7 +22,7 @@ function App() {
             <Redirect />
           </SignedIn>
          <SignedOut>
-          <RedirectToSignIn />
+          <RedirectToSignIn redirectUrl={"/"} />
         </SignedOut>
       </div>
     </ClerkProvider>

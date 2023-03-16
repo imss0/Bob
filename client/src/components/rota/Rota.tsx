@@ -4,7 +4,7 @@ import PersonRow from './PersonRow';
 import { Employee, ShiftTypes as ShiftTypesType } from "../../types";
 import * as ApiService from "../../ApiService";
 
-function Rota({ shiftTypes }: { shiftTypes: ShiftTypesType[] }) {
+function Rota({ shiftTypes, userId }: { shiftTypes: ShiftTypesType[], userId: string }) {
   const [rota, setRota] = useState<Employee[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -13,7 +13,7 @@ function Rota({ shiftTypes }: { shiftTypes: ShiftTypesType[] }) {
   }).map(([key, value]) => [value, key]));
 
   useEffect(() => {
-    ApiService.getRota()
+    ApiService.getRota(userId)
       .then((data) => {setRota(data);})
       .catch((error) => {
         setError("Not enough employees to cover the required shifts!");

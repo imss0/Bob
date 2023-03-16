@@ -4,7 +4,14 @@ const db = require('../models');
 
 exports.getAllEmployees = async (req: Request, res: Response) => {
   try {
-    let employees = await db.Employee.findAll();
+    console.log(req.params.user_id);
+    let employees = await db.Employee.findAll(
+      {
+        where: {
+          user_id: req.params.user_id
+        }
+      }
+    );
     res.status(200).send(employees);
   } catch (error) {
     console.log(error);
@@ -17,7 +24,8 @@ exports.addEmployee = async (req: Request, res: Response) => {
     let newEmployee = await db.Employee.create({
       name: req.body.name,
       surname: req.body.surname,
-      email: req.body.email
+      email: req.body.email,
+      user_id: req.body.user
     });
 
     console.log("Employee added");
@@ -39,7 +47,10 @@ exports.deleteEmployee = async (req: Request, res: Response) => {
   let id = req.params.id;
   try {
     await db.Employee.destroy({
-      where: { employee_id: id }
+      where: {
+        user_id: req.params.user_id,
+        employee_id: id
+      }
     });
 
     res
@@ -62,6 +73,7 @@ exports.updateEmployee = async (req: Request, res: Response) => {
   try {
     let toBeUpdatedArr = await db.Employee.findAll({
       where: {
+        user_id: req.params.user_id,
         employee_id: id
       }
     });

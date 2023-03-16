@@ -9,31 +9,24 @@ const { shiftDuration, fakeDate } = require("../convertTime");
 
 const MAXHOURS = 150;
 
-async function getAllShiftsWithShiftType() {
+async function getAllShiftsWithShiftType(user_id:string) {
   try {
     let shiftsCell = await db.ShiftType.findAll({
       include: [
         {
           model: db.Shift,
           required: true,
-          where: { shift_type_id: { [Op.not]: null } },
+          where: {
+            // user_id: user_id,
+            shift_type_id: { [Op.not]: null },
+          },
         },
       ],
       //https://stackoverflow.com/questions/21961818/sequelize-convert-entity-to-plain-object
       raw: true,
     });
     console.log({ shiftsCell });
-    /*
-{
-  shift_type_id: string;
-  abbreviation: string;
-  start: string;
-  end: string;
-  description: string;
-  dayIndex: number;
-  people_required: number;
-}
-*/
+
     const reformatedArray = shiftsCell.map((shift: any) => {
       return String(shift["shifts.day_number_array"])
         .substring(1, shift["shifts.day_number_array"].length - 1)
@@ -58,7 +51,7 @@ async function getAllShiftsWithShiftType() {
   }
 }
 
-let getAllEmployees = async () => {
+let getAllEmployees = async (user_id:string) => {
   try {
     let temp = await db.Employee.findAll({ raw: true });
     let employees = temp.map((emp: Employees) => ({
@@ -73,12 +66,12 @@ let getAllEmployees = async () => {
   }
 };
 
-async function expandShiftsWithShiftType() {
+async function expandShiftsWithShiftType(user_id:string) {
   let days: Record<string, any> = [...Array(31).keys()].reduce((acc, elem) => {
     return { ...acc, ...{ [elem + 1]: [] } };
   }, {});
   try {
-    let inp = await getAllShiftsWithShiftType();
+    let inp = await getAllShiftsWithShiftType(user_id);
     let out = inp
       .flat()
       .filter((shift: any) => shift["shifts.people_required"] > 0)
@@ -125,9 +118,9 @@ function prioritise(employees: Employees[], shiftType: Record<string, any>) {
 }
 
 // async function generateRandomRotas (numRotas) {
-async function generateRandomRotas() {
-  let inpDays = await expandShiftsWithShiftType();
-  let inpEmployees = await getAllEmployees();
+async function generateRandomRotas(user_id:string) {
+  let inpDays = await expandShiftsWithShiftType(user_id);
+  let inpEmployees = await getAllEmployees(user_id);
   let bestRota: unknown[] = [];
   let numRotas = 1;
   for (let i of Array(numRotas)) {
@@ -195,7 +188,7 @@ async function generateRandomRotas() {
 
 exports.getRota = async (req: Request, res: Response) => {
   try {
-    let rota = await generateRandomRotas();
+    let rota = await generateRandomRotas(req.params.user_id);
     res.status(200).send(rota);
     // .send({ data: rota, error: null });// handle in the front end
   } catch (error) {

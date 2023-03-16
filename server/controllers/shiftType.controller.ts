@@ -4,7 +4,13 @@ const db = require("../models");
 
 exports.getAllShiftTypes = async (req: Request, res: Response) => {
   try {
-    let shiftTypes = await db.ShiftType.findAll();
+    let shiftTypes = await db.ShiftType.findAll(
+      {
+        where :{
+          user_id: req.params.user_id,
+        }
+      }
+    );
     res.status(200).send(shiftTypes);
   } catch (error) {
     console.log(error);
@@ -19,6 +25,7 @@ exports.addShiftType = async (req: Request, res: Response) => {
       abbreviation: req.body.abbreviation,
       start: req.body.start,
       end: req.body.end,
+      user_id: req.body.user
     });
 
     res.status(201).send(newShiftType);
@@ -34,7 +41,10 @@ exports.deleteShiftType = async (req: Request, res: Response) => {
 
   try {
     await db.ShiftType.destroy({
-      where: { shift_type_id: id },
+      where: {
+        user_id: req.params.user_id,
+        shift_type_id: id
+      },
     });
     res.status(200).json({
       message: ` Shift type deleted successfully`,
@@ -49,7 +59,10 @@ exports.updateShiftType = async (req: Request, res: Response) => {
 
   try {
     let toBeUpdatedArr = await db.ShiftType.findAll({
-      where: { shift_type_id: id },
+      where: {
+        user_id: req.params.user_id,
+        shift_type_id: id
+      },
     });
     let temp = toBeUpdatedArr[0];
     await temp.set({ ...req.body });

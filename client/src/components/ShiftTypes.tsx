@@ -5,17 +5,20 @@ import { MdDownloadDone } from "react-icons/md";
 import "./shiftTypes.css";
 import { Shifts, ShiftTypes as ShiftTypesType } from "../types";
 import * as ApiService from "../ApiService";
+import { useUser } from "@clerk/clerk-react";
 
 function ShiftTypes({
   shiftTypes,
   setShiftTypes,
   shifts,
   setShifts,
+  userId
 }: {
   shiftTypes: ShiftTypesType[];
   setShiftTypes: React.Dispatch<React.SetStateAction<ShiftTypesType[]>>;
   shifts: Shifts[];
   setShifts: React.Dispatch<React.SetStateAction<(number | Shifts)[]>>;
+  userId: string
 }) {
   const [newShiftType, setNewShiftType] = useState({
     description: "",
@@ -24,15 +27,16 @@ function ShiftTypes({
     end: "",
   });
   const URL = "http://localhost:4000/";
+  const user = useUser();
 
   useEffect(() => {
-    ApiService.getShiftTypes()
+    ApiService.getShiftTypes(userId)
       .then((data) => setShiftTypes(data)) // helper.sortShiftTypeByName
       .catch((error) => console.error(error));
   }, [setShiftTypes]);
 
   const handleDelete = (id: number) => {
-    ApiService.deleteShiftType(id)
+    ApiService.deleteShiftType(id, userId)
       .then(() =>
         setShiftTypes(shiftTypes.filter((shift) => shift.shift_type_id !== id))
       )
@@ -40,16 +44,16 @@ function ShiftTypes({
   };
 
   async function addShift(day_number_array: number[], shift_type_id: number) {
-    return ApiService.addShift(day_number_array, shift_type_id);
+    return ApiService.addShift(day_number_array, shift_type_id, userId);
   }
 
   async function handleAdd() {
     // Adding a new shift type:
     const newShiftTypeId = // @TODO - use ApiService (but now it has type issue)
-      await fetch(URL + "shift-type", {
+      await fetch(URL + "shift-type/" + userId, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newShiftType),
+        body: JSON.stringify({ ...newShiftType, user: user?.user?.id }),
       }).then((response) => response.json());
     let tmpShiftType = newShiftTypeId;
     let updatedList = [...shiftTypes, tmpShiftType];
@@ -79,7 +83,7 @@ function ShiftTypes({
   };
 
   const handleSave = (id: number, field: string, value: string) => {
-    ApiService.changeShiftType(id, field, value);
+    ApiService.changeShiftType(id, field, value, userId);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

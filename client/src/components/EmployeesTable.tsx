@@ -5,29 +5,34 @@ import { AiOutlineUserAdd } from "react-icons/ai";
 import "./employeesTable.css";
 import { Employees as EmployeesType } from "../types";
 import * as ApiService from "../ApiService";
+import { useUser } from "@clerk/clerk-react";
 
 const EmployeesTable = ({
   employees,
   setEmployees,
+  userId
 }: {
   employees: EmployeesType[];
   setEmployees: React.Dispatch<React.SetStateAction<EmployeesType[]>>;
+  userId: string
 }) => {
   const [newEmployee, setNewEmployee] = useState({
     name: "",
     surname: "",
     email: "",
   });
+
+  const user = useUser();
   const URL = "http://localhost:4000/";
 
   useEffect(() => {
-    ApiService.getEmployees()
+    ApiService.getEmployees(userId)
       .then((data) => setEmployees(helper.sortEmployeesByName(data)))
       .catch((error) => console.error(error));
   }, [setEmployees]);
 
   const handleDelete = (id: number) => {
-    ApiService.deleteEmployee(id)
+    ApiService.deleteEmployee(id, userId)
       .then(() =>
         setEmployees(
           employees.filter((employee) => employee.employee_id !== id)
@@ -37,7 +42,7 @@ const EmployeesTable = ({
   };
 
   const handleAdd = () => {
-    ApiService.addEmployee(newEmployee)
+    ApiService.addEmployee({ ...newEmployee, user: user?.user?.id }, userId)
       .then((data) => {
         let updatedList = [...employees, data];
         setEmployees(helper.sortEmployeesByName(updatedList));
@@ -60,7 +65,7 @@ const EmployeesTable = ({
   };
 
   const handleSave = (id: number, field: string, value: string) => {
-    ApiService.changeEmployee(id, field, value);
+    ApiService.changeEmployee(id, field, value, userId);
   };
 
   return (

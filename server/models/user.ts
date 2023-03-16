@@ -1,11 +1,9 @@
 "use strict"; 
-const employee = require('./employee');
-
 const User :any = (sequelize: any, DataTypes: any) =>
   sequelize.define(
     "user",
     {
-      id: {
+      user_id: {
         type: DataTypes.STRING,
         primaryKey: true,
       },
@@ -14,9 +12,6 @@ const User :any = (sequelize: any, DataTypes: any) =>
       tableName: "users",
       timestamps: false,
     },
-    User.associate = function () {
-      User.hasMany(employee, {as: 'employee'})
-    }
   );
 
 module.exports = User;
