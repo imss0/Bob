@@ -44,5 +44,3 @@ The Shift Planning Web App is built using the following technologies:
 5. Run `npm run dev` in server folder
 6. Run `npm start` in client folder
 
-
-## Contributor
