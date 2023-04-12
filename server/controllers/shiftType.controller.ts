@@ -4,16 +4,14 @@ const db = require("../models");
 
 exports.getAllShiftTypes = async (req: Request, res: Response) => {
   try {
-    let shiftTypes = await db.ShiftType.findAll(
-      {
-        where :{
-          user_id: req.params.user_id,
-        }
-      }
-    );
+    let shiftTypes = await db.ShiftType.findAll({
+      where: {
+        user_id: req.params.user_id,
+      },
+    });
     res.status(200).send(shiftTypes);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).send(error);
   }
 };
@@ -25,7 +23,7 @@ exports.addShiftType = async (req: Request, res: Response) => {
       abbreviation: req.body.abbreviation,
       start: req.body.start,
       end: req.body.end,
-      user_id: req.body.user
+      user_id: req.body.user,
     });
 
     res.status(201).send(newShiftType);
@@ -43,7 +41,7 @@ exports.deleteShiftType = async (req: Request, res: Response) => {
     await db.ShiftType.destroy({
       where: {
         user_id: req.params.user_id,
-        shift_type_id: id
+        shift_type_id: id,
       },
     });
     res.status(200).json({
@@ -61,7 +59,7 @@ exports.updateShiftType = async (req: Request, res: Response) => {
     let toBeUpdatedArr = await db.ShiftType.findAll({
       where: {
         user_id: req.params.user_id,
-        shift_type_id: id
+        shift_type_id: id,
       },
     });
     let temp = toBeUpdatedArr[0];

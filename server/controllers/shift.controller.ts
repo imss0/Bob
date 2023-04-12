@@ -7,7 +7,7 @@ exports.getAllShifts = async (req: Request, res: Response) => {
     let shifts = await db.Shift.findAll();
     res.status(200).send(shifts);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).send(error);
   }
 };

@@ -12,8 +12,8 @@ export const getShifts = async (user_id: string) => {
 
 export const getShiftTypes = async (user_id: string) => {
   // this one is used in ShiftTypes as well
-  const response = await fetch(`${URL}shift-types/${user_id}`).then((response) =>
-    response.json()
+  const response = await fetch(`${URL}shift-types/${user_id}`).then(
+    (response) => response.json()
   );
   return response;
 };
@@ -37,11 +37,14 @@ export const addShift = async (
     }),
   })
     .then((response) => response.json())
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
   return shift;
 };
 
-export const handleAddShiftType = async (newShiftType: ShiftTypes, user_id: string) => {
+export const handleAddShiftType = async (
+  newShiftType: ShiftTypes,
+  user_id: string
+) => {
   const newShiftTypeId = await fetch(`${URL}shift-type/${user_id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -118,7 +121,11 @@ export const getRota = async (user_id: string) => {
 };
 
 // API for Cell (in shifts)
-export const changeShift = async (id: number, updatedArray: number[], user_id: string) => {
+export const changeShift = async (
+  id: number,
+  updatedArray: number[],
+  user_id: string
+) => {
   const response = fetch(`${URL}shift/${id}/${user_id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -130,9 +137,7 @@ export const changeShift = async (id: number, updatedArray: number[], user_id: s
 
 // API for userDB check
 export const getUser = async (user_id: string) => {
-  return fetch(`${URL}getuser/${user_id}`)
-    .then(res => res.json());
-  
-}
+  return fetch(`${URL}getuser/${user_id}`).then((res) => res.json());
+};
 
 export {};

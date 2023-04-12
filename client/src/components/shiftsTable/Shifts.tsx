@@ -6,16 +6,13 @@ function Shift({
   shifts,
   setShifts,
   shiftTypes,
-  userId
+  userId,
 }: {
   shifts: Shifts[];
   setShifts: React.Dispatch<React.SetStateAction<Shifts[]>>;
   shiftTypes: ShiftTypesType[];
-  userId: string
+  userId: string;
 }) {
-  // console.log({ shifts });
-  // console.log("shiftTypes", shiftTypes);
-
   return (
     <div className="container">
       <div className="empty"></div>

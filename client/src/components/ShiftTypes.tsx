@@ -12,13 +12,13 @@ function ShiftTypes({
   setShiftTypes,
   shifts,
   setShifts,
-  userId
+  userId,
 }: {
   shiftTypes: ShiftTypesType[];
   setShiftTypes: React.Dispatch<React.SetStateAction<ShiftTypesType[]>>;
   shifts: Shifts[];
   setShifts: React.Dispatch<React.SetStateAction<(number | Shifts)[]>>;
-  userId: string
+  userId: string;
 }) {
   const [newShiftType, setNewShiftType] = useState({
     description: "",
@@ -68,7 +68,6 @@ function ShiftTypes({
     //   })
     // );
     addShift(newShifts, tmpShiftType.shift_type_id);
-    console.log("NEW2", newShifts);
     //updating shifts:
     setShifts([...shifts, ...newShifts]);
     setNewShiftType({ description: "", abbreviation: "", start: "", end: "" });

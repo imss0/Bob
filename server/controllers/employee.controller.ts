@@ -1,20 +1,17 @@
-'use strict';
+"use strict";
 import { Request, Response } from "express";
-const db = require('../models');
+const db = require("../models");
 
 exports.getAllEmployees = async (req: Request, res: Response) => {
   try {
-    console.log(req.params.user_id);
-    let employees = await db.Employee.findAll(
-      {
-        where: {
-          user_id: req.params.user_id
-        }
-      }
-    );
+    let employees = await db.Employee.findAll({
+      where: {
+        user_id: req.params.user_id,
+      },
+    });
     res.status(200).send(employees);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).send(error);
   }
 };
@@ -25,21 +22,15 @@ exports.addEmployee = async (req: Request, res: Response) => {
       name: req.body.name,
       surname: req.body.surname,
       email: req.body.email,
-      user_id: req.body.user
+      user_id: req.body.user,
     });
 
-    console.log("Employee added");
-
-    res
-      .status(201)
-      .send(newEmployee);
+    res.status(201).send(newEmployee);
   } catch (error) {
-    console.log(error);
-    res
-      .status(400)
-      .send({
-        errors: error
-      });
+    console.error(error);
+    res.status(400).send({
+      errors: error,
+    });
   }
 };
 
@@ -49,23 +40,18 @@ exports.deleteEmployee = async (req: Request, res: Response) => {
     await db.Employee.destroy({
       where: {
         user_id: req.params.user_id,
-        employee_id: id
-      }
+        employee_id: id,
+      },
     });
 
-    res
-      .status(200)
-      .json({
-        message: ` Employee deleted successfully`,
-      });
+    res.status(200).json({
+      message: ` Employee deleted successfully`,
+    });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .send(error);
+    console.error(error);
+    res.status(500).send(error);
   }
 };
-
 
 exports.updateEmployee = async (req: Request, res: Response) => {
   let id = req.params.id;
@@ -74,21 +60,16 @@ exports.updateEmployee = async (req: Request, res: Response) => {
     let toBeUpdatedArr = await db.Employee.findAll({
       where: {
         user_id: req.params.user_id,
-        employee_id: id
-      }
+        employee_id: id,
+      },
     });
     let temp = toBeUpdatedArr[0];
     await temp.set({ ...req.body });
     await temp.save();
 
-    res
-      .status(200)
-      .send(`Empoyee with id:${id} was updated successfully.`);
-
+    res.status(200).send(`Empoyee with id:${id} was updated successfully.`);
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .send(error);
+    console.error(error);
+    res.status(500).send(error);
   }
 };

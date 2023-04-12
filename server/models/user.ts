@@ -1,5 +1,5 @@
-"use strict"; 
-const User :any = (sequelize: any, DataTypes: any) =>
+"use strict";
+const User: any = (sequelize: any, DataTypes: any) =>
   sequelize.define(
     "user",
     {
@@ -11,7 +11,7 @@ const User :any = (sequelize: any, DataTypes: any) =>
     {
       tableName: "users",
       timestamps: false,
-    },
+    }
   );
 
 module.exports = User;

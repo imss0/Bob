@@ -8,7 +8,7 @@ function Cell({
   className,
   cellDayNumber,
   shiftType,
-  userId
+  userId,
 }: {
   shift: number;
   shifts: Shifts[];
@@ -18,14 +18,12 @@ function Cell({
   shiftType: any;
   userId: string;
 }) {
-
   const handleUpdate = (index: number, value: string) => {
     const updatedShifts: Shifts[] = shifts.map((item: any) => {
       if (item.shift_type_id === shiftType.shift_type_id) {
         const currentShiftDaysArray = String(item.day_number_array)
           .substring(1, item.day_number_array.length - 1)
           .split(",");
-        console.log({ currentShiftDaysArray });
         currentShiftDaysArray.splice(index, 1, value);
         return {
           shift_type_id: item.shift_type_id,
@@ -40,7 +38,6 @@ function Cell({
   };
 
   const handleSave = (id: number, value: string) => {
-    console.log("ARR", { shifts }, { id }, { value }, { shiftType });
     const currentShiftDays = shifts.find(
       (item) => item.shift_type_id === shiftType.shift_type_id
     )?.day_number_array;
@@ -50,7 +47,6 @@ function Cell({
         .split(",");
 
       tempArr.splice(id, 1, value === "" ? "0" : value);
-      console.log("UPDATED", tempArr);
       ApiService.changeShift(
         shiftType.shift_type_id,
         tempArr.map((item) => Number(item)),

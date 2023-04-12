@@ -1,7 +1,7 @@
 "use strict";
 
 import { Request, Response } from "express";
-import { Employee, Employees, Shift, Shifts, ShiftTypes } from "../types";
+import { Employees, ShiftTypes } from "../types";
 
 const { Op } = require("sequelize");
 const db = require("../models");
@@ -9,7 +9,7 @@ const { shiftDuration, fakeDate } = require("../convertTime");
 
 const MAXHOURS = 150;
 
-async function getAllShiftsWithShiftType(user_id:string) {
+async function getAllShiftsWithShiftType(user_id: string) {
   try {
     let shiftsCell = await db.ShiftType.findAll({
       include: [
@@ -17,15 +17,12 @@ async function getAllShiftsWithShiftType(user_id:string) {
           model: db.Shift,
           required: true,
           where: {
-            // user_id: user_id,
             shift_type_id: { [Op.not]: null },
           },
         },
       ],
-      //https://stackoverflow.com/questions/21961818/sequelize-convert-entity-to-plain-object
       raw: true,
     });
-    console.log({ shiftsCell });
 
     const reformatedArray = shiftsCell
       .map((shift: any) => {
@@ -45,21 +42,21 @@ async function getAllShiftsWithShiftType(user_id:string) {
               "shifts.people_required": item,
             };
           });
-      }).filter((shift:any) => shift !== null)
-    console.log("reformatedArray", reformatedArray[0].map((item:any) => item.user_id));
+      })
+      .filter((shift: any) => shift !== null);
     return reformatedArray;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
-let getAllEmployees = async (user_id:string) => {
+let getAllEmployees = async (user_id: string) => {
   try {
     let temp = await db.Employee.findAll({
       where: {
-        user_id: user_id
+        user_id: user_id,
       },
-      raw: true
+      raw: true,
     });
     let employees = temp.map((emp: Employees) => ({
       employee_id: emp.employee_id,
@@ -69,11 +66,11 @@ let getAllEmployees = async (user_id:string) => {
     }));
     return employees;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
-async function expandShiftsWithShiftType(user_id:string) {
+async function expandShiftsWithShiftType(user_id: string) {
   let days: Record<string, any> = [...Array(31).keys()].reduce((acc, elem) => {
     return { ...acc, ...{ [elem + 1]: [] } };
   }, {});
@@ -89,10 +86,9 @@ async function expandShiftsWithShiftType(user_id:string) {
       let d = shift["shifts.day_number"].toString();
       days[d].push(shift);
     });
-    console.log({ days });
     return days;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
@@ -125,7 +121,7 @@ function prioritise(employees: Employees[], shiftType: Record<string, any>) {
 }
 
 // async function generateRandomRotas (numRotas) {
-async function generateRandomRotas(user_id:string) {
+async function generateRandomRotas(user_id: string) {
   let inpDays = await expandShiftsWithShiftType(user_id);
   let inpEmployees = await getAllEmployees(user_id);
   let bestRota: unknown[] = [];
@@ -153,7 +149,6 @@ async function generateRandomRotas(user_id:string) {
           throw new Error(
             "There is an issue with the number of available employees. Check you hired enough"
           );
-          // console.log( "There is an issue with the number of available employees. Check you hired enough")
         }
         toBeAssigned = availablePeople.slice(
           0,
@@ -187,19 +182,13 @@ async function generateRandomRotas(user_id:string) {
   }
   return bestRota;
 }
-//prints the rota
-// async function logPromiseResult () {
-//   console.log(await generateRandomRotas(1));
-// }
-// logPromiseResult();
 
 exports.getRota = async (req: Request, res: Response) => {
   try {
     let rota = await generateRandomRotas(req.params.user_id);
     res.status(200).send(rota);
-    // .send({ data: rota, error: null });// handle in the front end
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).send({ error: error.message });
   }
 };
