@@ -3,104 +3,77 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgb(35, 39, 42);
-
-  font-family: 'Poppins'
-  /* -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; */
+  font-family: "Poppins";
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
 #root {
-  /* flex-grow:1; */
-  height:100%
+  height: 100%;
 }
 
 .App {
   display: flex;
-  height:100vh;
+  height: 100vh;
 }
 
-
-.Nav{
+.Nav {
   height: 100%;
   width: 200px;
-  background-color:rgb(61 168 152);
-  /*#78c2e0*/
+  background-color: rgb(61 168 152);
 }
 
-.nav-list{
+.nav-list {
   list-style: none;
-  /* height: auto; */
   padding: 0;
   width: 100%;
 }
 
 .nav-selected {
-  background-color:rgb(35, 39, 42);
+  background-color: rgb(35, 39, 42);
 }
 
 .nav-not-selected {
-  background-color:rgb(61 168 152);
+  background-color: rgb(61 168 152);
 }
 
-.nav-row:hover{
+.nav-row:hover {
   background-color: rgb(35, 39, 42);
   cursor: pointer;
-
 }
 
- .nav-row{
+.nav-row {
   outline: 1 px solid gold;
   color: gold;
   display: flex;
-  /* justify-content: center; */
   align-items: center;
   flex-direction: row;
 }
 
-.redirect{
-  width:100%;
+.redirect {
+  width: 100%;
   padding: 10px;
-  /* display:flex;
-  justify-content:center;
-  align-items:flex-start; */
 }
 
 a {
   text-decoration: none;
-  color:rgb(222 247 243);
-  width:100%;
-  display:flex;
+  color: rgb(222 247 243);
+  width: 100%;
+  display: flex;
   align-content: center;
   flex-direction: row;
   align-items: center;
 }
 
 a > * {
-  margin-left: 15px
+  margin-left: 15px;
 }
 
-/* .add-btn{
-  color: rgb(245, 245, 245);
-  background-color: green;
-} */
-
-/* .delete-btn{
-  color: rgb(255, 255, 255);
-  background-color: red;
-} */
-svg{
+svg {
   font-size: 26px;
   font-weight: 900;
 }
-/* tr{
-  background-color: rgb(146, 155, 152);
-} */
 

@@ -8,7 +8,18 @@ function Home() {
     <>
       <div className="bgr">
         <h1>Bob</h1>
-        <p>A shift planner for busy medical professionals</p>
+        <div className="description">
+          <h2>A shift planner for busy professionals</h2>
+          <p>
+            - This app generates shifts for <u>4 weeks (28days)</u>
+          </p>
+          <p>
+            - Employees have the right to{" "}
+            <u>11 hours rest between working days.</u> This app takes into
+            account this rule. Therefore, the shifts created by this app are
+            designed to comply with the rest rights of employees.
+          </p>
+        </div>
       </div>
     </>
   );

@@ -31,7 +31,7 @@ function Rota({
   }, [setRota]);
 
   const createDays = () => {
-    const res = [...Array(31).keys()].map((x) => x + 1);
+    const res = [...Array(28).keys()].map((x) => x + 1);
     return res.map((num) => (
       <div
         key={num}

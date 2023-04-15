@@ -2,7 +2,7 @@
   display: grid;
   width:80%;
   min-width: 720px;
-  grid-template-columns: 5% repeat(31, 3.00%);
+  grid-template-columns: 5% repeat(28, 3.00%);
   grid-row-gap:5px;
   grid-column-gap:5px;
   justify-items: center;

@@ -59,9 +59,9 @@ function ShiftTypes({
     let updatedList = [...shiftTypes, tmpShiftType];
     setShiftTypes(updatedList); // helper.sortShiftTypeByName
 
-    // Creating 31 placeholder shifts associated with the new shift type
+    // Creating 28 placeholder shifts associated with the new shift type
     // so that the shift table is pre-populated:
-    let newShifts = [...Array(31).fill(0)];
+    let newShifts = [...Array(28).fill(0)];
     // newShifts = await Promise.all(
     //   newShifts.map(async (shift) => {
     //     return addShift(shift, tmpShiftType.shift_type_id);

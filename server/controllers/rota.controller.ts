@@ -71,7 +71,7 @@ let getAllEmployees = async (user_id: string) => {
 };
 
 async function expandShiftsWithShiftType(user_id: string) {
-  let days: Record<string, any> = [...Array(31).keys()].reduce((acc, elem) => {
+  let days: Record<string, any> = [...Array(28).keys()].reduce((acc, elem) => {
     return { ...acc, ...{ [elem + 1]: [] } };
   }, {});
   try {
@@ -107,7 +107,7 @@ function prioritise(employees: Employees[], shiftType: Record<string, any>) {
       let newBegin = fakeDate(startDay, startTime);
       let oldEnd = fakeDate(lastShiftDay, lastShiftEnd);
       var hoursDelta = (newBegin - oldEnd) / 36e5;
-      x.restedEnough = hoursDelta >= 11.5;
+      x.restedEnough = hoursDelta > 11;
     } else {
       x.restedEnough = true;
     }
@@ -130,7 +130,7 @@ async function generateRandomRotas(user_id: string) {
     let days: Record<string, any> = { ...inpDays };
     let employees = [...inpEmployees];
     // loop for every day
-    for (let dayNumber = 1; dayNumber <= 31; dayNumber++) {
+    for (let dayNumber = 1; dayNumber <= 28; dayNumber++) {
       // if no shift is required, go to next day
       if (days[dayNumber].length === 0) {
         continue;
