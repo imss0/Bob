@@ -40,7 +40,7 @@ The Shift Planning Web App is built using the following technologies:
 - Database: Postgres
 - Authentication: Clerk
 
-## Getting Started [WIP]
+## Getting Started 
 
 1. Run `npm i` in root folder(Bob), /server and /client
 2. postgreSQL, or cloud service (e.g. railway) which is compatible to postgreSQL is needed.
